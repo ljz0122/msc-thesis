@@ -1,0 +1,23 @@
+\chapter{Selection}
+
+\section{Astrometry data sources and Target Selection}
+
+The selection of candidate Quasars based on the position measurement from Gaia mission \citep{gaiacollaborationGaiaMission2016} and photometric data from SDSS and WISE. 
+
+\subsection{Gaia}
+
+Thanks for high precision position measurement of objects from Gaia. We are possible to filter the targets without proper motion in $3\sigma$. Our selection based on Gaia DR3 data from \citet{gaiacollaborationGaiaDataRelease2023}.
+
+The first selection based on the following SQL program:
+
+\begin{minted}[]{SQL}
+SELECT source_id, ra, dec, l, b, pmra, pmra_error, pmdec, pmdec_error, parallax, parallax_error, phot_g_mean_mag, phot_g_mean_flux, phot_g_mean_flux_error, phot_bp_mean_mag, phot_rp_mean_mag, bp_rp, ref_epoch
+FROM gaiaedr3.gaia_source AS gaia 
+WHERE gaia.ra>=190 AND gaia.ra<=210  -- Restrict RA in 190 to 210
+  AND gaia.dec>22 AND gaia.dec<36    -- Restrict DEC in 22 to 36
+  AND gaia.phot_g_mean_mag<=19.     -- Restrict G-Band mag below 19
+  AND abs((gaia.parallax + 0.017)/gaia.parallax_error)<=2  
+  AND (power(gaia.pmra/gaia.pmra_error,2) + power(gaia.pmdec/gaia.pmdec_error,2))<=4
+\end{minted}
+
+This code will select all objects in area around north galactic pole (<RA with zero parallax in 2-sigma.

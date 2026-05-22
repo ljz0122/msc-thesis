@@ -5,6 +5,30 @@
 \usepackage{natbib}
 \usepackage[cache=false]{minted} 
 \usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{nomencl}
+\usepackage{float}
+\usepackage{siunitx}
+\usepackage{multirow}
+\usepackage{diagbox}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{makecell}
+\usepackage{threeparttablex}
+\usepackage{pdfpages}
+
+\setsecnumdepth{subsubsection}
+
+\newcommand{\rawfigwidth}{1.25\textwidth}
+
+\makenomenclature
+\bibpunct{(}{)}{;}{a}{}{,}
 
 \usemintedstyle{vs} 
 \definecolor{bg}{rgb}{0.95,0.95,0.95}
@@ -16,6 +40,8 @@
 \setlength\arraycolsep{2 pt}
 \setcounter{tocdepth}{2}
 \setcounter{secnumdepth}{3}
+\captionsetup[subfigure]{font=scriptsize}
+\captionsetup{font=small}
 
 \renewcommand{\bibname}{References}
 
@@ -29,14 +55,14 @@
 %\frontpagesubtitle{An intruiging subtitle}
 %\frontpagedate{Submitted: May 20, 2026}
 
-\title{A Quasars' Sample based on SNAQS Obervations}
+\title{A Quasar Sample based on Astrometric Data from Gaia Data Release 3}
 \subtitle{}
 \date{Submitted: May 20, 2026}
 \advisor{Supervisor: Johan Fynbo}
 % \frontpageimage{example.png}
 \submissionstatement{}
 
-\kupdfsetup{A Quasars' Sample based on SNAQS Obervations}{}{Jiazhe Li}
+\kupdfsetup{A Quasar Sample based on Astrometric Data from Gaia Data Release 3}{}{Jiazhe Li}
 
 \begin{document}
 \begingroup
@@ -44,29 +70,152 @@
   \maketitle
 \endgroup
 
-\pagenumbering{roman}
+%\pagenumbering{roman}
+\frontmatter
 \begin{abstract}
 
-    Quasars are one of natures wonders. They are the electromagnetic manifestation of supermassive black holes (with masses upwards of one billion solar masses) that are in an "active" state. This means that they are accreting mass at a rate of a few solar masses per year and thereby emitting light at a flux equivalent to hundreds of galaxies. Quasars were first discovered in 1963 as radio sources. Already in 1965 it was discovered that there are 10 times more objects similar to quasars, but without strong radio emission (the called quasi-stellar galaxies - today we call them all quasars). Since then, it has been clear that selection effects play a major role for the study of quasars: the quasars in a given sample is highly dependent on how the sample was selected. In this thesis we will work on a new quasar selection technique that is supposed to be as "simply biased" as possible, namely based on astrometry. We will simply select an object to be a candidate quasar if the astrometry satellite Gaia sees the source as a compact source with no significant parallax and proper motion. In 2025 a large survey called PAQS (Purely Astrometric Quasar Survey) will commence and if we are lucky we may use some of that data in the thesis. As a start we will use data from a stepping stone pre-survey called SNAQS (Small NOT Astrometric Quasar Survey) where we will analyze a much smaller sample selected to a brighter flux limit. We will use the SNAQS sample to make some forecasts of what PAQS may find in terms of stellar contamination, galaxy contamination, quasar redshift distribution, distribution of quasar properties (dust extinction, broad absorption lines, etc.). In particular, we will begin this MSc project by working on the observations of quasar candidates from SNAQS. And hopefully, we may also contain some new data from PAQS which will begin in the autumn of 2025. It could be an opportunity to verify the forecasts we get form data of SNAQS. This project will involve reducing raw data (extraction, wavelength calibration, and flux calibration) and analyzing the reduced spectra (classification, redshift determination).  
+    The Smaller NOT Astrometric Quasar Survey (SNAQS) aims to construct a $100\%$ complete sample of quasars with $m_G < 19$ within a 245-square-degree region around the North Galactic Pole. It serves as a pilot survey for the more extensive Purely Astrometric Quasar Survey (PAQS) planned for the southern sky. Building upon the purely astrometric selection methods introduced by \citet{heintz_study_2015}—which established that approximately $80\%$ of stationary sources near the galactic poles are quasars—we analyzed a new set of spectra from SNAQS. In this work, we determined the actual fraction of quasars among these stationary sources and identified missing populations by comparing our results with existing spectroscopic surveys. Based on these findings, we project the expected yields for PAQS. Finally, we leveraged recent Gaia Data Release 3 to propose a more efficient and accurate methodology for selecting astrometrically stationary objects as quasar candidates.
+
+    \vspace{1em}
+    \noindent \textbf{Keywords:} Quasar, Survey, Astrometry, Gaia, Spectrum
     
 \end{abstract}
+
 
 \newpage
 \tableofcontents
 \newpage
+\printnomenclature
+\addcontentsline{toc}{chapter}{Nomenclature}
+%\listoffigures        
+%\listoftables          
 
-\pagenumbering{arabic}
-\setcounter{page}{1} 
-\chapter{Introduction}
+\nomenclature{$\varpi$}{Parallax}
+\nomenclature{$\sigma_\varpi$}{Standard error of parallax}
+\nomenclature{$\mu_{\alpha*}$}{Proper motion in right ascension direction}
+\nomenclature{$\mu_{\delta}$}{Proper motion in declination direction}
+\nomenclature{$\sigma_{\mu_{\alpha*}}$}{Standard error of proper motion in right ascension direction}
+\nomenclature{$\sigma_{\mu_{\delta}}$}{Standard error of proper motion in declination direction}
+\nomenclature{$\rho_{\mu_{\alpha*}\mu_{\delta}}$}{Correlation between proper motion in right ascension and proper motion in declination}
+\nomenclature{$m_G$}{G-band mean magnitude in Gaia}
 
-Quasars are one of natures wonders. They are the electromagnetic manifestation of supermassive black holes (with masses upwards of one billion solar masses) that are in an "active" state. This means that they are accreting mass at a rate of a few solar masses per year and thereby emitting light at a flux equivalent to hundreds of galaxies. Quasars were first discovered in 1963 as radio sources. Already in 1965 it was discovered that there are 10 times more objects similar to quasars, but without strong radio emission (the called quasi-stellar galaxies - today we call them all quasars). Since then, it has been clear that selection effects play a major role for the study of quasars: the quasars in a given sample is highly dependent on how the sample was selected. In this thesis we will work on a new quasar selection technique that is supposed to be as "simply biased" as possible, namely based on astrometry. We will simply select an object to be a candidate quasar if the astrometry satellite Gaia sees the source as a compact source with no significant parallax and proper motion. In 2025 a large survey called PAQS (Purely Astrometric Quasar Survey) will commence and if we are lucky we may use some of that data in the thesis. As a start we will use data from a stepping stone pre-survey called SNAQS (Small NOT Astrometric Quasar Survey) where we will analyze a much smaller sample selected to a brighter flux limit. We will use the SNAQS sample to make some forecasts of what PAQS may find in terms of stellar contamination, galaxy contamination, quasar redshift distribution, distribution of quasar properties (dust extinction, broad absorption lines, etc.). In particular, we will begin this MSc project by working on the observations of quasar candidates from SNAQS. And hopefully, we may also contain some new data from PAQS which will begin in the autumn of 2025. It could be an opportunity to verify the forecasts we get from data of SNAQS. This project will involve reducing raw data (extraction, wavelength calibration, and flux calibration) and analyzing the reduced spectra (classification, redshift determination).  
 
+%\pagenumbering{arabic}
+%\setcounter{page}{1} 
+\mainmatter
+
+\include{chpt/intro}
 \include{chpt/selection}
 \include{chpt/spec}
 \include{chpt/results}
+\include{chpt/discuss}
+
+\chapter{Conclusion}
+
+We have almost finished a prior survey for PAQS as SNAQS. In conclusion, our results illustrate 63 of 88 observed objects, or $\sim72\%$, are quasars. After combination with other large survey results, $\sim87\%$ targets in SNAQS selection are quasars. This is in good accordance with previous results from \citet{heintz_study_2015}. Based on this ratio, $\sim 38,600$ targets will not be identified as quasars in PAQS which contains $\sim315,000$ targets. This ratio could be lower because we higher estimated the number of quasars combination with other large survey results and it will cover a bigger area (from the pole down to about \qty{\sim30}{\degree}) in PAQS, while SNAQS just covered a region up to less than \qty{10}{\degree} from the galactic north.
+
+At the same time, we introduced a potential new method could push the ratio to $\sim96.5\%$ ($\sim2\sigma$). While the new selection still contains a number of sources without existing spectra and the classification results of large survey are also lack of visual verification. These need some following research.
 
 \newpage
+
+\chapter*{Acknowledgements}
+\addcontentsline{toc}{chapter}{Acknowledgements}
+
+How time flies! 
+
+As finished this thesis, my 2-year's life in Niels Bohr Institute and Cosmic Dawn Center as a Master Student will come to the end soon. It's still hard for me to realize this fact. I have learned so many things these two years, whatever for science or life. Also, I really like my experience in Copenhagen and will miss it in the future.
+
+At the end, I would like to express my deepest appreciation to my supervisor, Prof. Johan Fynbo, for his expertise, understanding, and patience which help me to finish this thesis and my graduate experience. I also need to say thanks to Prof. Lise Christensen, for her useful spectra analyse tools. Next people I should say thanks is another Master Student Kaj Grimstrup. Thank for his comments on my work and sharing his idea. Special thanks to two Chinese PhD students in the next office, Guozhen Ma and Zihao Li, as you usually call me to have lunch together and so much help in other thing. Also need to appreciate the financial support from my parents. It's not a low cost to live in Copenhagen.
+
+Limited by pages and time, I can't write down every person that I need to acknowledge. However, you guys will be always in my mind. 
+
+\newpage
+
+This work has made use of data from the European Space Agency (ESA) mission
+{\it Gaia} (\url{https://www.cosmos.esa.int/gaia}), processed by the {\it Gaia}
+Data Processing and Analysis Consortium (DPAC,
+\url{https://www.cosmos.esa.int/web/gaia/dpac/consortium}). Funding for the DPAC
+has been provided by national institutions, in particular the institutions
+participating in the {\it Gaia} Multilateral Agreement.
+
+Funding for the Sloan Digital Sky Survey V has been provided by the Alfred P. Sloan Foundation, the Heising-Simons Foundation, the National Science Foundation, and the Participating Institutions. SDSS acknowledges support and resources from the Center for High-Performance Computing at the University of Utah. SDSS telescopes are located at Apache Point Observatory, funded by the Astrophysical Research Consortium and operated by New Mexico State University, and at Las Campanas Observatory, operated by the Carnegie Institution for Science. The SDSS web site is \url{www.sdss.org}.
+
+SDSS is managed by the Astrophysical Research Consortium for the Participating Institutions of the SDSS Collaboration, including the Carnegie Institution for Science, Chilean National Time Allocation Committee (CNTAC) ratified researchers, Caltech, the Gotham Participation Group, Harvard University, Heidelberg University, The Flatiron Institute, The Johns Hopkins University, L'Ecole polytechnique f\'{e}d\'{e}rale de Lausanne (EPFL), Leibniz-Institut f\"{u}r Astrophysik Potsdam (AIP), Max-Planck-Institut f\"{u}r Astronomie (MPIA Heidelberg), Max-Planck-Institut f\"{u}r Extraterrestrische Physik (MPE), Nanjing University, National Astronomical Observatories of China (NAOC), New Mexico State University, The Ohio State University, Pennsylvania State University, Smithsonian Astrophysical Observatory, Space Telescope Science Institute (STScI), the Stellar Astrophysics Participation Group, Universidad Nacional Aut\'{o}noma de M\'{e}xico, University of Arizona, University of Colorado Boulder, University of Illinois at Urbana-Champaign, University of Toronto, University of Utah, University of Virginia, Yale University, and Yunnan University.  
+
+Funding for the Sloan Digital Sky 
+Survey IV has been provided by the 
+Alfred P. Sloan Foundation, the U.S. 
+Department of Energy Office of 
+Science, and the Participating 
+Institutions. 
+
+SDSS-IV acknowledges support and 
+resources from the Center for High 
+Performance Computing  at the 
+University of Utah. The SDSS 
+website is www.sdss4.org.
+
+SDSS-IV is managed by the 
+Astrophysical Research Consortium 
+for the Participating Institutions 
+of the SDSS Collaboration including 
+the Brazilian Participation Group, 
+the Carnegie Institution for Science, 
+Carnegie Mellon University, Center for 
+Astrophysics | Harvard \& 
+Smithsonian, the Chilean Participation 
+Group, the French Participation Group, 
+Instituto de Astrof\'isica de 
+Canarias, The Johns Hopkins 
+University, Kavli Institute for the 
+Physics and Mathematics of the 
+Universe (IPMU) / University of 
+Tokyo, the Korean Participation Group, 
+Lawrence Berkeley National Laboratory, 
+Leibniz Institut f\"ur Astrophysik 
+Potsdam (AIP),  Max-Planck-Institut 
+f\"ur Astronomie (MPIA Heidelberg), 
+Max-Planck-Institut f\"ur 
+Astrophysik (MPA Garching), 
+Max-Planck-Institut f\"ur 
+Extraterrestrische Physik (MPE), 
+National Astronomical Observatories of 
+China, New Mexico State University, 
+New York University, University of 
+Notre Dame, Observat\'ario 
+Nacional / MCTI, The Ohio State 
+University, Pennsylvania State 
+University, Shanghai 
+Astronomical Observatory, United 
+Kingdom Participation Group, 
+Universidad Nacional Aut\'onoma 
+de M\'exico, University of Arizona, 
+University of Colorado Boulder, 
+University of Oxford, University of 
+Portsmouth, University of Utah, 
+University of Virginia, University 
+of Washington, University of 
+Wisconsin, Vanderbilt University, 
+and Yale University.
+
+Guoshoujing Telescope (the Large Sky Area Multi-Object Fiber Spectroscopic Telescope LAMOST) is a National Major Scientific Project built by the Chinese Academy of Sciences. Funding for the project has been provided by the National Development and Reform Commission. LAMOST is operated and managed by the National Astronomical Observatories, Chinese Academy of Sciences.
+
+This research used data obtained with the Dark Energy Spectroscopic Instrument (DESI). DESI construction and operations is managed by the Lawrence Berkeley National Laboratory. This material is based upon work supported by the U.S. Department of Energy, Office of Science, Office of High-Energy Physics, under Contract No. DE–AC02–05CH11231, and by the National Energy Research Scientific Computing Center, a DOE Office of Science User Facility under the same contract. Additional support for DESI was provided by the U.S. National Science Foundation (NSF), Division of Astronomical Sciences under Contract No. AST-0950945 to the NSF’s National Optical-Infrared Astronomy Research Laboratory; the Science and Technology Facilities Council of the United Kingdom; the Gordon and Betty Moore Foundation; the Heising-Simons Foundation; the French Alternative Energies and Atomic Energy Commission (CEA); the National Council of Humanities, Science and Technology of Mexico (CONAHCYT); the Ministry of Science and Innovation of Spain (MICINN), and by the DESI Member Institutions: www.desi.lbl.gov/collaborating-institutions. The DESI collaboration is honored to be permitted to conduct scientific research on I’oligam Du’ag (Kitt Peak), a mountain with particular significance to the Tohono O’odham Nation. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the U.S. National Science Foundation, the U.S. Department of Energy, or any of the listed funding agencies.
+
+\newpage
+
 \bibliographystyle{aa}
 \bibliography{paper/ref}
+
+\begin{appendices}
+
+%\appendixpage
+\include{paper/chpt/math}
+
+\include{paper/chpt/raw}
+
+\end{appendices}
+
+\includepdf[pages={1-3}]{paper/AI-declaration-ENG.pdf}
 
 \end{document}

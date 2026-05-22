@@ -1,23 +1,81 @@
-\chapter{Selection}
+\chapter{SNAQS's Target Selection}
+\label{sec:selection}
 
 \section{Astrometry data sources and Target Selection}
 
-The selection of candidate Quasars based on the position measurement from Gaia mission \citep{gaiacollaborationGaiaMission2016} and photometric data from SDSS and WISE. 
+The selection of Quasar candidates based on the astrometric measurement from Gaia mission \citep{gaiacollaborationGaiaMission2016}. The selection method is from \citet{heintz_study_2015}'s work.
+
+\subsection{Principle of Selection}
+
+In common cases, quasars are a type of objects which is distant from the Earth. In other words, they are the background objects in the sky. 
+
+To discuss their astrometric features, we could assume a quasar is at redshift $z=0.5$, which is a low redshift value among quasars. If we apply the cosmological parameters from \citet{planckcollaborationPlanck2018Results2020f,planckcollaborationPlanck2018Results2021}, the comoving distance of this quasar is \qty{1946.42}{Mpc}. The parallax and distance have a relationship:\[D (\mathrm{pc}) = \frac{1}{\varpi (^{\prime\prime})}\] So the parallax ($\varpi$) of this quasar is \qty{5.14e-10}{\arcsecond} (\qty{5.14e-7}{mas}), which is unresolvable by modern technology. 
+
+For proper motion ($\mu$), we could assume the tangential velocity of this quasar is close to the light speed. Under this condition, the proper motion is \qty{0.032}{mas/yr}, which is also a very low value, and it's not possible to reach light speed in universe.
+
+In conclusion, quasars must have zero parallax and proper motion theoretically in astrometric data. This is the hypothesis we based for the quasar candidates selection.
+
+\citet{gaiacollaborationGaiaEarlyData2021} have mentioned they found a systemic \qty{\sim5}{\mu as/yr} proper motion on quasars, which is from the acceleration of the Solar System. This value is negligible in our selection.
 
 \subsection{Gaia}
 
-Thanks for high precision position measurement of objects from Gaia. We are possible to filter the targets without proper motion in $3\sigma$. Our original selection based on Gaia EDR3 data from \citet{gaiacollaborationGaiaEarlyData2021a}.
+Thanks for the high precision astrometric measurement of objects from Gaia. We are able to filter the targets with zero parallax and proper motion in $2\sigma$. Our original selection based on Gaia EDR3 data from \citet{gaiacollaborationGaiaEarlyData2021a}.
 
-The first selection based on the following SQL program:
-
+The original selection based on the following ADQL programme:
 \begin{minted}[]{SQL}
 SELECT source_id, ra, dec, l, b, pmra, pmra_error, pmdec, pmdec_error, parallax, parallax_error, phot_g_mean_mag, phot_g_mean_flux, phot_g_mean_flux_error, phot_bp_mean_mag, phot_rp_mean_mag, bp_rp, ref_epoch
 FROM gaiaedr3.gaia_source AS gaia 
 WHERE gaia.ra>=190 AND gaia.ra<=210
   AND gaia.dec>22 AND gaia.dec<36
   AND gaia.phot_g_mean_mag<=19.
-  AND abs((gaia.parallax)/gaia.parallax_error)<=2  
+  AND abs((gaia.parallax+0.017)/gaia.parallax_error)<=2  
   AND (power(gaia.pmra/gaia.pmra_error,2) + power(gaia.pmdec/gaia.pmdec_error,2))<=4
 \end{minted}
+This code will select all objects brighter than 19 mag in the Gaia G-band around the north galactic pole with zero parallax and zero proper motion in $2\sigma$ approximately. If the uncertainties of the measurements of the objects' parallax and proper motion obey the normal distribution, this selection would contain about $91.1\%$ potential quasars based on astrometric data.
 
-This code will select all objects in area around north galactic pole with zero parallax in 2-sigma.
+The original list from the query above contains 1627 targets. This is the base of the next processing.
+
+\subsection{The Globular Cluster M3}
+
+\textbf{M3} (NGC 5272) is a globular cluster located at $\text{RA} = 205^{\circ}\,32'\,54\overset{\prime\prime}{.}3$, $\text{Dec} = +28^{\circ}\,22'\,38\overset{\prime\prime}{.}2$ \citep{Goldsbury_2010}, which falls within the SNAQS footprint. In our initial candidate list, there are 14 targets located within this cluster.
+
+\section{Existing Spectroscopic Data}
+
+We cross-matched our candidate list with three major spectroscopic surveys with \qty{1}{\arcsecond} radius to identify targets that had already been observed. 
+
+\subsection{SDSS}
+
+The Sloan Digital Sky Survey (SDSS) is one of the most important and influential wide-field spectroscopic surveys in modern astrophysics, providing a number of essential optical and near-infrared spectra for target classification and redshift confirmation\citep{yorkSloanDigitalSky2000,kollmeierSloanDigitalSky2026}. Leveraging the extensive database from its latest Data Release 19 (DR19) \citep{collaborationNineteenthDataRelease2025}, we found that the spectra have already been published for \num{1434} targets in our candidate list.
+
+\subsection{LAMOST}
+
+In addition to SDSS, we incorporated data from the Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST), a facility renowned for its exceptionally wide field of view and massive multiplexing capabilities \citep{zhaoLAMOSTSpectralSurvey2012,cuiLargeSkyArea2012}. We queried the latest public data release (DR11) of LAMOST \citep{lamostoperationanddevelopmentcenterLAMOSTDR11V202025}. This dataset contains \num{950} spectra for \num{711} targets in our candidate list, as several objects were observed across multiple epochs.
+
+\subsection{DESI}
+
+Finally, to complete our spectroscopic validation, we cross-matched our sample with the Dark Energy Spectroscopic Instrument (DESI), a state-of-the-art, highly multiplexed facility designed to map the large-scale structure of the Universe \citep{desicollaborationOverviewInstrumentationDark2022}. Their first Data Release \citep{desi_collaboration_data_2025} provides spectra for \num{786} targets among our candidates.
+
+After merging and removing duplicated targets across catalogues, there are total \num{1524} targets with existed spectra from SDSS, LAMOST and DESI. The number and classification distribution of them among each survey are illustrated in Table~\ref{tab:survey_in_selec}.
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{l c c c}
+        \toprule
+        \textbf{Type} & \textbf{SDSS DR19} & \textbf{LAMOST DR11} & \textbf{DESI DR1} \\
+        Total Numbers & (\num{1434}) & (\num{711}) & (\num{786}) \\
+        \midrule
+        QSO    & \num{1271} ($\approx 88.63\%$) & \num{609} ($\approx 85.77\%$) & \num{675} ($\approx 85.88\%$) \\
+        Galaxy & \num{159} ($\approx 11.09\%$)  & \num{81} ($\approx 11.41\%$)  & \num{103} ($\approx 13.10\%$) \\
+        Star   & \num{4} ($\approx 0.28\%$)     & \num{20} ($\approx 2.82\%$)   & \num{8} ($\approx 1.02\%$)    \\
+        \bottomrule
+    \end{tabular}
+    \caption{The Number of Targets with Existed Spectra across SDSS, LAMOST and DESI catalogues, and the Distribution of their Spectra Classification in Each Survey. \textbf{Note:} These classifications rely entirely on automated pipeline outputs and have not been visually verified.}
+    \label{tab:survey_in_selec}
+\end{table}
+
+\section{The final observation list for SNAQS}
+
+After excluding targets with existing spectra from the major surveys we checked, 103 candidates remained. We further removed 14 targets located in M3 and 17 targets with available spectra in the NASA/IPAC Extragalactic Database (NED). Consequently, our final potential observation list comprises 71 targets, as detailed in Table~\ref{tab:obs_plan}.
+
+\input{paper/tab/no_spec_no_m3_gaia.tex}
+
+This list is the base of our observation targets list.

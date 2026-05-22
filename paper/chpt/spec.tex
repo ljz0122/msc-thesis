@@ -1,19 +1,283 @@
-\chapter{Spectropic}
-\section{Spectrometric data sources}
+\chapter{Spectroscopy}
+\label{chpt:spec}
 
-\subsection{SDSS}
+\section{Spectroscopic data sources}
 
-\subsection{LAMOST}
-
-\subsection{DESI}
+Since January 2025, we have observed 88 targets from our selected list of quasar candidates. These observations are taken by two telescopes, Nordic Optical Telescope (NOT) and Gran Telescopio CANARIAS (GTC). Both of them are located in La Palma, Spain.
 
 \subsection{NOT}
 
+The Nordic Optical Telescope (NOT), located at La Palma in Canary Islands, is a joint program by astronomers from the Nordic countries. All of SNAQS observations on NOT were taken with The Alhambra Faint Object Spectrograph and Camera (ALFOSC). All targets were observed with the grism~\#4 and \qty{1}{\arcsecond} slit, which covers the wavelengths \qtyrange{3200}{9600}{\angstrom} with a spectral resolution $R=360$. Spectral resolution ($R$) is a criteria to demonstrate the instrument's ability to distinguish smaller details in electromagnetic spectra and it's defined by: \[R = \frac{\lambda}{\Delta\lambda}\] where $\Delta\lambda$ is the smallest difference in wavelength that can be distinguished at the wavelength $\lambda$.
+
 \subsection{GTC}
 
-\subsection{SOXS}
+The Gran Telescopio Canarias is also located at La Palma in Canary Islands as NOT. All observations from GTC were taken with the upgraded Optical System for Imaging and low-Intermediate-Resolution Integrated Spectroscopy (OSIRIS+). Furthermore all the observations were performed with the grism \texttt{R1000B}, which covers wavelengths \qtyrange{3630}{7000}{\angstrom} with a spectral resolution $R=1018$.
 
-\section{Raw Data Reduction}
+%\subsection{SOXS}
 
-The reduction of SNAQ's data used python package PyLongslit developed by \citet{valeckas_pylongslit_2025}.
+\section{Summary of Observations}
 
+\citet{kris-msc} had processed the data from January to August in 2025. After he graduated, the author took over the reduction of remaining observations from November 2025. So the author would only discuss about the observation since November 2025 in this chapter.
+
+We have observed \num{37} targets on NOT/ALFOSC since November 2025. Table~\ref{tab:obs} contains the information of these observations.
+
+\begin{ThreePartTable}
+    \begin{TableNotes}\footnotesize
+        \item[a] This Exposure Time value is from the frame with the longest Exposure Time. In common cases, we took two frames for a target in same exposure time. But sometimes, due to weather change or some other issues, we may get some frames of the same target with different exposure times.
+    \end{TableNotes}
+    \input{paper/tab/obs}
+\end{ThreePartTable}
+
+\section{Data Reduction}
+
+The reduction of SNAQS's data based on the Python package \texttt{PyLongslit} developed by \citet{valeckas_pylongslit_2025}. The author of this thesis also developed some Python scripts to order the raw files and generate the configuration file. These scripts have already been uploaded to GitHub\footnote{https://github.com/ljz0122/msc-thesis.git}.
+
+\subsection{Summary of Data Processing}
+
+The data reduction workflow could be separated as 3 main parts -- preprocessing(Figure~\ref{fig:py-step-1}), post-reduction(Figure~\ref{fig:py-step-2}) and 1D spectrum extraction(Figure~\ref{fig:py-step-3})
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{paper//figs//spec//pylongslit/step-1.png}
+    \caption{Step 1 - processing raw data. In this step, all the raw observation and calibration frames are used to construct calibrated 2D spectra. After this step, all procedures are performed directly on the calibrated 2D spectra, and the raw frames are no longer used \citep{valeckas_pylongslit_2025}.}
+    \label{fig:py-step-1}
+\end{figure}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{paper//figs//spec//pylongslit/step-2.png}
+    \caption{Step 2 - further processing of the calibrated 2D spectra. In this step, the user can deploy cosmic-ray removal, sky background subtraction, and crop the spectra. All procedures alter the 2D spectra in place. All of the steps are optional, but there are some dependencies — these are described in the figure \citep{valeckas_pylongslit_2025}.}
+    \label{fig:py-step-2}
+\end{figure}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{paper//figs//spec//pylongslit/step-3.png}
+    \caption{Step 3 - 1D spectrum extraction. In this step, objects are traced, extracted, flux-calibrated and combined (if several spectra of the same object exist) \citep{valeckas_pylongslit_2025}.}
+    \label{fig:py-step-3}
+\end{figure}
+
+\subsection{Preprocessing}
+
+\subsubsection{BIAS Frames}
+
+Bias frames are zero-second exposures taken with the telescope shutter closed. They record the fixed zero-point electronic offset of the CCD along with the associated readout noise. To reduce this part of signal baseline from our science images, a series of raw bias frames are acquired -- usually at the beginning or end of an observation night -- and combined (such as median combination) into a high signal-to-noise Master Bias frame (see Figure \ref{fig:master_bias}).
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{paper//figs//spec//reduction/bias.png}
+    \caption{Master Bias Frame for Observation Date 2026-02-17}
+    \label{fig:master_bias}
+\end{figure}
+
+While this master frame maps the spatial structure of the bias level across the detector, the overall bias level can still fluctuate throughout the whole night. To correct for these temporal variations between the science frames and the bias frames were taken, an overscan correction is typically applied using the overscan region of each individual frame.\citep{alma99123053678205763}
+
+Additionally, there is no bias frames for some observation days. But it's stable based on the Quality Monitoring\footnote{https://www.not.iac.es/instruments/qc/alfosc.php} on NOT Website. Consequently, we used the closest day's frame to do the reduction. 
+
+\subsubsection{Arc Frames}
+
+To connect the pixel on CCD to a certain wavelength, arc frames were acquired before and after the science exposures using the identical grism configuration. These calibration frames were generated by illuminating the light path with an arc lamp which could produce a series of known wavelength light. The resulting spectra are used to establish the dispersion solution, mapping the detector pixels to physical wavelengths. For observations at the Nordic Optical Telescope (NOT), a HeNe (Helium-Neon) lamp was utilized. 
+
+To get a higher signal-to-noise arc frame, we could combine multiple arc frames (like Figure~\ref{fig:master_arc}).
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{paper//figs//spec//reduction/arc.png}
+    \caption{Example of Master Arc Frame}
+    \label{fig:master_arc}
+\end{figure}
+
+With a list of pixel positions with matched wavelength, we could fit the lines to certain wavelengths (Figure~\ref{fig:wavecalib}) and generate the wavelength map of whole frame (Figure~\ref{fig:wl_map}).
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{paper//figs//spec//reduction/wavecalib.png}
+    \caption{Example of Traced Lines}
+    \label{fig:wavecalib}
+\end{figure}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{paper//figs//spec//reduction/wl_map.png}
+    \caption{Example of Wavelength Map}
+    \label{fig:wl_map}
+\end{figure}
+
+\subsubsection{FLAT Frames}
+
+Understanding flat frames requires defining three key terms: Analog-to-Digital Units (ADU), gain (the number of ADU could be produced by 1 electron), and Quantum Efficiency (QE, the ratio of detected to incident photons) \citep{alma99123053678205763}. Individual CCD pixels exhibit inherent variations in gain and QE. Consequently, even under uniform illumination, the output signal varies across the detector \citep{alma99123053678205763}. Flat frames are acquired to correct this pixel-to-pixel sensitivity variation. 
+Similar to bias and arc frames, multiple flat frames are combined to generate a master flat frame. This master flat frame is then normalized by dividing each pixel by the frame's global average value. In the resulting normalized flat field, a value of 1 represents the detector's average sensitivity, and variations reflect relative differences in pixel QE\citep{alma99123033908205763}. Figure~\ref{fig:flat} is a example of Master Flat Frame
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{paper//figs//spec//reduction/flat.png}
+    \caption{Example of Master Flat Frame}
+    \label{fig:flat}
+\end{figure}
+
+We also missed some day's flat frames. As Figure~\ref{fig:flat_comp} shows, there is no big difference between nearly days. As a result, we used closest day's flat frame. 
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[b]{\linewidth}
+        \includegraphics[angle=90,width=\linewidth]{paper/figs/spec/reduction/2-20.png}
+        \caption{2026-02-20}
+    \end{subfigure} \\
+    \begin{subfigure}[b]{\linewidth}
+        \includegraphics[angle=90,width=\linewidth]{paper/figs/spec/reduction/2-21.png}
+        \caption{2026-02-21}
+    \end{subfigure}
+    \caption{Comparison of Flat frames in two nearly days.}
+    \label{fig:flat_comp}
+\end{figure}
+
+\subsubsection{Reduction}
+
+Once the master calibration frames (bias, arc, and flat) have been generated, the pipeline could proceed to the primary reduction of the scientific observation frames. This process applies the previously discussed corrections: for each raw science frame, the master bias is subtracted to remove the base signal, and the result is divided by the normalized master flat field to correct for pixel-to-pixel sensitivity variations. This standard calibration is applied to all observation frames, yielding reduced data ready for subsequent pipeline steps, such as wavelength calibration and spectral extraction. Figure~\ref{fig:red_comp} shows an example of comparison between the science frame before and after reduction.
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[b]{\linewidth}
+        \includegraphics[width=\linewidth]{paper/figs/spec/reduction/raw_data.png}
+        \caption{Raw Frame}
+    \end{subfigure} \\
+    \begin{subfigure}[b]{\linewidth}
+        \includegraphics[width=\linewidth]{paper/figs/spec/reduction/reduced_data.png}
+        \caption{Reduced Frame}
+    \end{subfigure}
+    \caption{Comparison of the frames before and after Reduction from the same Exposure Frame}
+    \label{fig:red_comp}
+\end{figure}
+
+\subsection{2D Spectra}
+
+After the reduction, we could try to remove the contamination from cosmic ray and sky background. 
+
+To remove cosmic ray, we could use the algorithm to detect and remove the cosmic ray hit points, like Figure~\ref{fig:cosmic}.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{paper//figs//spec//reduction/cosmic.png}
+    \caption{Cosmic-ray Removal}
+    \label{fig:cosmic}
+\end{figure}
+
+The first step of sky background subtraction is to generate a sky model of frame, like Figure~\ref{fig:skymodel}. Then we could use this model to remove sky background. Figure~\ref{fig:skysub} is an example of sky background subtraction.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{paper//figs//spec//reduction/sky_model.png}
+    \caption{Model of Sky Background}
+    \label{fig:skymodel}
+\end{figure}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{paper//figs//spec//reduction/sky_sub.png}
+    \caption{Sky Background Subtraction}
+    \label{fig:skysub}
+\end{figure}
+
+\subsection{1D Spectra}
+
+Following the above 2D reduction steps, the final phase of the data processing pipeline involves extracting and calibrating the one-dimensional (1D) spectra. This essential procedure transforms the fully corrected 2D spectroscopic images into scientifically actionable data, representing flux as a function of physical wavelength. 
+
+\subsubsection{1D Spectrum Extraction}
+
+The primary objective of this step is to collapse the spatial profile of the target on the 2D detector into a single 1D spectrum while maximizing the signal-to-noise ratio (SNR) and minimizing contamination from the outside pixels. 
+
+First, the spatial position of the target trace along the dispersion axis is mapped. Once traced, the spectrum is typically extracted using an optimal extraction algorithm  \citep[following][]{1986PASP...98..609H}. Unlike just a simple aperture extraction (which uniformly sums all pixels within a spatial window), optimal extraction applies a spatial weighting profile based on the empirical Point Spread Function (PSF) of the target. This method heavily weights the central pixels where the target signal is strongest and down-weights the noisy outer wings. Concurrently, the local sky background is estimated from adjacent spatial regions devoid of target emission and subtracted, while residual cosmic rays are identified and masked out through variance analysis. Figure~\ref{fig:objtrace} is a example of object tracing and Figure~\ref{fig:1dspec} is an example of an extracted 1D spectrum.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{paper//figs//spec//reduction/objtrace.png}
+    \caption{Object Tracing}
+    \label{fig:objtrace}
+\end{figure}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{paper//figs//spec//reduction/1d.png}
+    \caption{1D Spectrum}
+    \label{fig:1dspec}
+\end{figure}
+
+\subsubsection{Flux Calibration}
+
+This is achieved by observing a spectroscopic standard star at a similar airmass to the science target. By comparing the observed spectrum of the standard star to its tabulated true fluxes, a wavelength-dependent sensitivity function (response curve) is derived. Figure~\ref{fig:sens} is the sample to get sensitive function.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{paper//figs//spec//reduction/sens.png}
+    \caption{How to get Sensitive Function}
+    \label{fig:sens}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{paper//figs//spec//reduction/flux.png}
+    \caption{Flux Sample}
+    \label{fig:flux}
+\end{figure}
+
+With sensitive function and airmass, we could convert ADU or electrons to flux in $ \text{erg} \, \text{s}^{-1} \, \text{cm}^{-2} \, \text{\AA}^{-1} $. Figure~\ref{fig:flux} shows a sample of calibrated flux.
+
+\subsubsection{Combination of Multiple Spectra}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\linewidth]{paper//figs//spec//reduction/combine.png}
+    \caption{Example of Combination of Spectra}
+    \label{fig:combine}
+\end{figure}
+
+To improve the signal-to-noise ratio (SNR) of spectrum, we usually take multiple frames for a single target. Then we can combine the frames with Inverse Variance Weighted Regression (IVWR), which is defined by: \[{\hat {y}}={\frac {\sum _{i}y_{i}/\sigma _{i}^{2}}{\sum _{i}1/\sigma _{i}^{2}}}\]
+and variance is \[Var({\hat {y}})={\frac {1}{\sum _{i}1/\sigma _{i}^{2}}}\]
+
+Figure~\ref{fig:combine} is the sample of combination of spectra.
+
+\section{Spectral Analysis}
+
+The quasar spectrum template from \citet{selsing_x-shooter_2016} is used to classify the quasars and identify the redshift of them. The Python package \texttt{dust\_extinction} developed by \citet{gordonDust_extinctionInterstellarDust2024} is applied to calculate the dust extinction effect. The extinction curve we used in this analyze is from \citet{ysardTHEMIS20Selfconsistent2024}.
+
+\subsection{Automatic Match}
+
+We used \texttt{emcee} \citep{foreman-mackeyEmceeMCMCHammer2013} to run MCMC (Markov Chain Monte Carlo) to find the best fitted redshift and extinction parameters. This method is based on random walks and aim to find out the model with maximum likelihood. This programme is pushed on my GitHub repository\footnote{https://github.com/ljz0122/msc-thesis\label{fn:gh-repo}}.
+
+To reduce the contamination from the telluric absorption lines, we masked the spectra at wavelength \qtyrange{6860}{6915}{\angstrom} ($\mathrm{O}_2$ B-band) and \qtyrange{7590}{7690}{\angstrom} ($\mathrm{O}_2$ A-band) in automatic fitting. It's much harder to remove telluric absorption lines than the emission ones, because it requires a more complex model to fit the absorption lines in spectra. While the software \texttt{molecfit} developed by \citet{smetteMolecfitGeneralTool2015} is a tool to do this and has been tested on ESO's instruments, it requires too much time to make it work on the spectra from NOT/ALFOSC (e.g. get compatible weather data). So we just simply masked the telluric absorption area to avoid its influence on automatic processing.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.6\linewidth}
+        \includegraphics[width=\linewidth]{paper/figs/spec/analyse/auto/qso.png}
+        \caption{Fitted Plot}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.35\linewidth}
+        \includegraphics[width=\linewidth]{paper/figs/spec/analyse/auto/qso-corner.png}
+        \caption{Corner plot}
+    \end{subfigure}
+    \caption{Example of Automatic Fit Result for a Quasar}
+    \label{fig:auto-qso}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.6\linewidth}
+        \includegraphics[width=\linewidth]{paper/figs/spec/analyse/auto/nonqso.png}
+        \caption{Fitted Plot}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.35\linewidth}
+        \includegraphics[width=\linewidth]{paper/figs/spec/analyse/auto/noqso-corner.png}
+        \caption{Corner plot}
+    \end{subfigure}
+    \caption{Example of Automatic Fit Result for a non-Quasar target}
+    \label{fig:auto-nonqso}
+\end{figure}
+
+Figure~\ref{fig:auto-qso} shows an example of an automatic fit to a quasar spectrum. Figure~\ref{fig:auto-nonqso} is an example for a non-quasar target.
+
+\subsection{Visual Inspection}
+
+Finally, we still need visual inspection to confirm if the automatic results are correct. We made a small programme to do it. At the same time, this script also maintains a file to store the final results. Figure~\ref{fig:man-gui} is a screenshot of this programme. This programme is also published on my GitHub repository\textsuperscript{\ref{fn:gh-repo}}.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\linewidth]{paper//figs//spec//analyse//man/Figure_1.png}
+    \caption{Screenshot of the Interface for Visual Inspection}
+    \label{fig:man-gui}
+\end{figure}
+
+This interface contains essential information of target and the parameters of the template spectrum on screen. It also has the button to select the classification and save the confirmed results. In addition, it also supports saving current progress and restoration from last progress.
+
+Figure~\ref{fig:man-res} is the example of visual inspected result for the same object in Figure~\ref{fig:man-gui}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\linewidth]{paper//figs//spec/analyse/man/SDSS_J124933+220915.png}
+    \caption{Example of the Visual Inspected Result}
+    \label{fig:man-res}
+\end{figure}

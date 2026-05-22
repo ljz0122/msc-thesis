@@ -25,7 +25,7 @@ We have observed \num{37} targets on NOT/ALFOSC since November 2025. Table~\ref{
     \begin{TableNotes}\footnotesize
         \item[a] This Exposure Time value is from the frame with the longest Exposure Time. In common cases, we took two frames for a target in same exposure time. But sometimes, due to weather change or some other issues, we may get some frames of the same target with different exposure times.
     \end{TableNotes}
-    \input{paper/tab/obs}
+    \input{tab/obs}
 \end{ThreePartTable}
 
 \section{Data Reduction}
@@ -38,19 +38,19 @@ The data reduction workflow could be separated as 3 main parts -- preprocessing(
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{paper//figs//spec//pylongslit/step-1.png}
+    \includegraphics[width=1\linewidth]{figs//spec//pylongslit/step-1.png}
     \caption{Step 1 - processing raw data. In this step, all the raw observation and calibration frames are used to construct calibrated 2D spectra. After this step, all procedures are performed directly on the calibrated 2D spectra, and the raw frames are no longer used \citep{valeckas_pylongslit_2025}.}
     \label{fig:py-step-1}
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{paper//figs//spec//pylongslit/step-2.png}
+    \includegraphics[width=1\linewidth]{figs//spec//pylongslit/step-2.png}
     \caption{Step 2 - further processing of the calibrated 2D spectra. In this step, the user can deploy cosmic-ray removal, sky background subtraction, and crop the spectra. All procedures alter the 2D spectra in place. All of the steps are optional, but there are some dependencies — these are described in the figure \citep{valeckas_pylongslit_2025}.}
     \label{fig:py-step-2}
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{paper//figs//spec//pylongslit/step-3.png}
+    \includegraphics[width=1\linewidth]{figs//spec//pylongslit/step-3.png}
     \caption{Step 3 - 1D spectrum extraction. In this step, objects are traced, extracted, flux-calibrated and combined (if several spectra of the same object exist) \citep{valeckas_pylongslit_2025}.}
     \label{fig:py-step-3}
 \end{figure}
@@ -62,7 +62,7 @@ The data reduction workflow could be separated as 3 main parts -- preprocessing(
 Bias frames are zero-second exposures taken with the telescope shutter closed. They record the fixed zero-point electronic offset of the CCD along with the associated readout noise. To reduce this part of signal baseline from our science images, a series of raw bias frames are acquired -- usually at the beginning or end of an observation night -- and combined (such as median combination) into a high signal-to-noise Master Bias frame (see Figure \ref{fig:master_bias}).
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{paper//figs//spec//reduction/bias.png}
+    \includegraphics[width=1\linewidth]{figs//spec//reduction/bias.png}
     \caption{Master Bias Frame for Observation Date 2026-02-17}
     \label{fig:master_bias}
 \end{figure}
@@ -78,7 +78,7 @@ To connect the pixel on CCD to a certain wavelength, arc frames were acquired be
 To get a higher signal-to-noise arc frame, we could combine multiple arc frames (like Figure~\ref{fig:master_arc}).
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{paper//figs//spec//reduction/arc.png}
+    \includegraphics[width=1\linewidth]{figs//spec//reduction/arc.png}
     \caption{Example of Master Arc Frame}
     \label{fig:master_arc}
 \end{figure}
@@ -86,13 +86,13 @@ To get a higher signal-to-noise arc frame, we could combine multiple arc frames 
 With a list of pixel positions with matched wavelength, we could fit the lines to certain wavelengths (Figure~\ref{fig:wavecalib}) and generate the wavelength map of whole frame (Figure~\ref{fig:wl_map}).
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{paper//figs//spec//reduction/wavecalib.png}
+    \includegraphics[width=1\linewidth]{figs//spec//reduction/wavecalib.png}
     \caption{Example of Traced Lines}
     \label{fig:wavecalib}
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{paper//figs//spec//reduction/wl_map.png}
+    \includegraphics[width=1\linewidth]{figs//spec//reduction/wl_map.png}
     \caption{Example of Wavelength Map}
     \label{fig:wl_map}
 \end{figure}
@@ -103,7 +103,7 @@ Understanding flat frames requires defining three key terms: Analog-to-Digital U
 Similar to bias and arc frames, multiple flat frames are combined to generate a master flat frame. This master flat frame is then normalized by dividing each pixel by the frame's global average value. In the resulting normalized flat field, a value of 1 represents the detector's average sensitivity, and variations reflect relative differences in pixel QE\citep{alma99123033908205763}. Figure~\ref{fig:flat} is a example of Master Flat Frame
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{paper//figs//spec//reduction/flat.png}
+    \includegraphics[width=1\linewidth]{figs//spec//reduction/flat.png}
     \caption{Example of Master Flat Frame}
     \label{fig:flat}
 \end{figure}
@@ -112,11 +112,11 @@ We also missed some day's flat frames. As Figure~\ref{fig:flat_comp} shows, ther
 \begin{figure}[htbp]
     \centering
     \begin{subfigure}[b]{\linewidth}
-        \includegraphics[angle=90,width=\linewidth]{paper/figs/spec/reduction/2-20.png}
+        \includegraphics[angle=90,width=\linewidth]{figs/spec/reduction/2-20.png}
         \caption{2026-02-20}
     \end{subfigure} \\
     \begin{subfigure}[b]{\linewidth}
-        \includegraphics[angle=90,width=\linewidth]{paper/figs/spec/reduction/2-21.png}
+        \includegraphics[angle=90,width=\linewidth]{figs/spec/reduction/2-21.png}
         \caption{2026-02-21}
     \end{subfigure}
     \caption{Comparison of Flat frames in two nearly days.}
@@ -129,11 +129,11 @@ Once the master calibration frames (bias, arc, and flat) have been generated, th
 \begin{figure}[htbp]
     \centering
     \begin{subfigure}[b]{\linewidth}
-        \includegraphics[width=\linewidth]{paper/figs/spec/reduction/raw_data.png}
+        \includegraphics[width=\linewidth]{figs/spec/reduction/raw_data.png}
         \caption{Raw Frame}
     \end{subfigure} \\
     \begin{subfigure}[b]{\linewidth}
-        \includegraphics[width=\linewidth]{paper/figs/spec/reduction/reduced_data.png}
+        \includegraphics[width=\linewidth]{figs/spec/reduction/reduced_data.png}
         \caption{Reduced Frame}
     \end{subfigure}
     \caption{Comparison of the frames before and after Reduction from the same Exposure Frame}
@@ -147,7 +147,7 @@ After the reduction, we could try to remove the contamination from cosmic ray an
 To remove cosmic ray, we could use the algorithm to detect and remove the cosmic ray hit points, like Figure~\ref{fig:cosmic}.
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{paper//figs//spec//reduction/cosmic.png}
+    \includegraphics[width=1\linewidth]{figs//spec//reduction/cosmic.png}
     \caption{Cosmic-ray Removal}
     \label{fig:cosmic}
 \end{figure}
@@ -155,13 +155,13 @@ To remove cosmic ray, we could use the algorithm to detect and remove the cosmic
 The first step of sky background subtraction is to generate a sky model of frame, like Figure~\ref{fig:skymodel}. Then we could use this model to remove sky background. Figure~\ref{fig:skysub} is an example of sky background subtraction.
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{paper//figs//spec//reduction/sky_model.png}
+    \includegraphics[width=1\linewidth]{figs//spec//reduction/sky_model.png}
     \caption{Model of Sky Background}
     \label{fig:skymodel}
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{paper//figs//spec//reduction/sky_sub.png}
+    \includegraphics[width=1\linewidth]{figs//spec//reduction/sky_sub.png}
     \caption{Sky Background Subtraction}
     \label{fig:skysub}
 \end{figure}
@@ -177,13 +177,13 @@ The primary objective of this step is to collapse the spatial profile of the tar
 First, the spatial position of the target trace along the dispersion axis is mapped. Once traced, the spectrum is typically extracted using an optimal extraction algorithm  \citep[following][]{1986PASP...98..609H}. Unlike just a simple aperture extraction (which uniformly sums all pixels within a spatial window), optimal extraction applies a spatial weighting profile based on the empirical Point Spread Function (PSF) of the target. This method heavily weights the central pixels where the target signal is strongest and down-weights the noisy outer wings. Concurrently, the local sky background is estimated from adjacent spatial regions devoid of target emission and subtracted, while residual cosmic rays are identified and masked out through variance analysis. Figure~\ref{fig:objtrace} is a example of object tracing and Figure~\ref{fig:1dspec} is an example of an extracted 1D spectrum.
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{paper//figs//spec//reduction/objtrace.png}
+    \includegraphics[width=1\linewidth]{figs//spec//reduction/objtrace.png}
     \caption{Object Tracing}
     \label{fig:objtrace}
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{paper//figs//spec//reduction/1d.png}
+    \includegraphics[width=1\linewidth]{figs//spec//reduction/1d.png}
     \caption{1D Spectrum}
     \label{fig:1dspec}
 \end{figure}
@@ -193,14 +193,14 @@ First, the spatial position of the target trace along the dispersion axis is map
 This is achieved by observing a spectroscopic standard star at a similar airmass to the science target. By comparing the observed spectrum of the standard star to its tabulated true fluxes, a wavelength-dependent sensitivity function (response curve) is derived. Figure~\ref{fig:sens} is the sample to get sensitive function.
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{paper//figs//spec//reduction/sens.png}
+    \includegraphics[width=1\linewidth]{figs//spec//reduction/sens.png}
     \caption{How to get Sensitive Function}
     \label{fig:sens}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{paper//figs//spec//reduction/flux.png}
+    \includegraphics[width=1\linewidth]{figs//spec//reduction/flux.png}
     \caption{Flux Sample}
     \label{fig:flux}
 \end{figure}
@@ -211,7 +211,7 @@ With sensitive function and airmass, we could convert ADU or electrons to flux i
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.9\linewidth]{paper//figs//spec//reduction/combine.png}
+    \includegraphics[width=0.9\linewidth]{figs//spec//reduction/combine.png}
     \caption{Example of Combination of Spectra}
     \label{fig:combine}
 \end{figure}
@@ -234,11 +234,11 @@ To reduce the contamination from the telluric absorption lines, we masked the sp
 \begin{figure}[htbp]
     \centering
     \begin{subfigure}[b]{0.6\linewidth}
-        \includegraphics[width=\linewidth]{paper/figs/spec/analyse/auto/qso.png}
+        \includegraphics[width=\linewidth]{figs/spec/analyse/auto/qso.png}
         \caption{Fitted Plot}
     \end{subfigure}
     \begin{subfigure}[b]{0.35\linewidth}
-        \includegraphics[width=\linewidth]{paper/figs/spec/analyse/auto/qso-corner.png}
+        \includegraphics[width=\linewidth]{figs/spec/analyse/auto/qso-corner.png}
         \caption{Corner plot}
     \end{subfigure}
     \caption{Example of Automatic Fit Result for a Quasar}
@@ -248,11 +248,11 @@ To reduce the contamination from the telluric absorption lines, we masked the sp
 \begin{figure}[htbp]
     \centering
     \begin{subfigure}[b]{0.6\linewidth}
-        \includegraphics[width=\linewidth]{paper/figs/spec/analyse/auto/nonqso.png}
+        \includegraphics[width=\linewidth]{figs/spec/analyse/auto/nonqso.png}
         \caption{Fitted Plot}
     \end{subfigure}
     \begin{subfigure}[b]{0.35\linewidth}
-        \includegraphics[width=\linewidth]{paper/figs/spec/analyse/auto/noqso-corner.png}
+        \includegraphics[width=\linewidth]{figs/spec/analyse/auto/noqso-corner.png}
         \caption{Corner plot}
     \end{subfigure}
     \caption{Example of Automatic Fit Result for a non-Quasar target}
@@ -266,7 +266,7 @@ Figure~\ref{fig:auto-qso} shows an example of an automatic fit to a quasar spect
 Finally, we still need visual inspection to confirm if the automatic results are correct. We made a small programme to do it. At the same time, this script also maintains a file to store the final results. Figure~\ref{fig:man-gui} is a screenshot of this programme. This programme is also published on my GitHub repository\textsuperscript{\ref{fn:gh-repo}}.
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.9\linewidth]{paper//figs//spec//analyse//man/Figure_1.png}
+    \includegraphics[width=0.9\linewidth]{figs//spec//analyse//man/Figure_1.png}
     \caption{Screenshot of the Interface for Visual Inspection}
     \label{fig:man-gui}
 \end{figure}
@@ -277,7 +277,7 @@ Figure~\ref{fig:man-res} is the example of visual inspected result for the same 
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.9\linewidth]{paper//figs//spec/analyse/man/SDSS_J124933+220915.png}
+    \includegraphics[width=0.9\linewidth]{figs//spec/analyse/man/SDSS_J124933+220915.png}
     \caption{Example of the Visual Inspected Result}
     \label{fig:man-res}
 \end{figure}

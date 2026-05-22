@@ -7,7 +7,7 @@ To determine what we missed in our selection, we checked \textit{The Sloan Digit
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\linewidth]{paper//figs//discuss/snaqs_missed_quasars.png}
+    \includegraphics[width=0.85\linewidth]{figs//discuss/snaqs_missed_quasars.png}
     \caption{Distribution of Proper Motion and Parallax of Quasars in SDSS DR16Q in SNAQS area}
     \label{fig:snaqs_miss}
 \end{figure}
@@ -64,22 +64,22 @@ We plotted the histograms of the proper motion-to-uncertainty ratios ($\mu_{\alp
 \begin{figure}[htbp]
     \centering
     \begin{subfigure}[b]{0.48\textwidth}
-        \includegraphics[width=\linewidth]{paper/figs/discuss/sdss_qso_pm_significance.png}
+        \includegraphics[width=\linewidth]{figs/discuss/sdss_qso_pm_significance.png}
         \caption{SDSS DR16Q}
         \label{fig:pm_sdss}
     \end{subfigure}
     \begin{subfigure}[b]{0.48\textwidth}
-        \includegraphics[width=\linewidth]{paper/figs/discuss/lamost_qso_pm_significance.png}
+        \includegraphics[width=\linewidth]{figs/discuss/lamost_qso_pm_significance.png}
         \caption{LAMOST Quasar Survey (DR2-11)}
         \label{fig:pm_lamost}
     \end{subfigure} \\
     \begin{subfigure}[b]{0.48\textwidth}
-        \includegraphics[width=\linewidth]{paper/figs/discuss/milliquas_qso_pm_significance.png}
+        \includegraphics[width=\linewidth]{figs/discuss/milliquas_qso_pm_significance.png}
         \caption{Milliquas v8}
         \label{fig:pm_milliquas}
     \end{subfigure} 
     \begin{subfigure}[b]{0.48\textwidth}
-        \includegraphics[width=\linewidth]{paper/figs/discuss/lqac6_qso_pm_significance.png}
+        \includegraphics[width=\linewidth]{figs/discuss/lqac6_qso_pm_significance.png}
         \caption{LQAC-6}
         \label{fig:pm_lqac6}
     \end{subfigure} 
@@ -119,7 +119,7 @@ We proceed to evaluate the statistical distribution of this criterion in theory 
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\linewidth]{paper//figs//discuss/rayleigh_halfnorm_cdf.png}
+    \includegraphics[width=\linewidth]{figs//discuss/rayleigh_halfnorm_cdf.png}
     \caption{CDFs of Half Normal and Rayleigh Distribution with scale parameters as 1. The green dashed line shows the probability of measurements fall in $\pm 2\sigma$ in a standard normal distribution.}
     \label{fig:ray_norm_cdf}
 \end{figure}
@@ -128,7 +128,7 @@ For a standard normal distribution, approximately \qty{95.45}{\percent} of the v
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.9\linewidth]{paper/figs/discuss/sdss_qso_pm_significance_rayleigh_fit.png}
+    \includegraphics[width=0.9\linewidth]{figs/discuss/sdss_qso_pm_significance_rayleigh_fit.png}
     \caption{Distribution of the total proper motion criterion for the SDSS DR16Q sample. The solid black line represents the best-fit Rayleigh distribution, while the red shaded area highlights the fraction of candidates excluded when adopting a threshold of 2.}
     \label{fig:sdss_qso_ray}
 \end{figure}
@@ -157,7 +157,7 @@ But in practical observation, the proper motion measurements in RA and Dec are n
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.9\linewidth]{paper/figs/discuss/pm_correlation_histogram.png}
+  \includegraphics[width=0.9\linewidth]{figs/discuss/pm_correlation_histogram.png}
   \caption{This histogram is the distribution of \texttt{pmra\_pmdec\_corr}, the correlation between proper motion in right ascension and proper motion in declination. It shows that the correlation is not able to be ignored}
   \label{fig:pmra_pmdec_corr_dist}
 \end{figure}
@@ -182,7 +182,7 @@ I also calculated the relative deviation $\delta$ between the result of Equation
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.9\linewidth]{paper/figs/discuss/pm_significance_difference_histogram.png}
+  \includegraphics[width=0.9\linewidth]{figs/discuss/pm_significance_difference_histogram.png}
   \caption{This histogram is the distribution of $\delta$, the relative deviation of the total proper motion divided by its standard error which from two different methods.}
   \label{fig:pm_delta_dist}
 \end{figure}
@@ -202,13 +202,13 @@ As illustrated in Figure~\ref{fig:separated_legend}, under the ideal assumption 
     \begin{minipage}[t]{0.65\linewidth}
         \vspace{0pt}
         \centering
-        \includegraphics[width=\linewidth]{paper/figs/discuss/error_ellipses.pdf}
+        \includegraphics[width=\linewidth]{figs/discuss/error_ellipses.pdf}
     \end{minipage}% 
     \hfill 
     \begin{minipage}[t]{0.3\linewidth}
         \centering
         \vspace{0pt}
-        \includegraphics[width=\linewidth]{paper/figs/discuss/legend_only.pdf}
+        \includegraphics[width=\linewidth]{figs/discuss/legend_only.pdf}
         \vspace{1.5em}
         \captionof{figure}{$2\sigma$ error ellipses for the zero hypothesis. It shows how the correlation coefficients influence the $2\sigma$ area size and shape. (The range of covariance value is from the same sample in \ref{sec:error_prop}.)}
         \label{fig:separated_legend}
@@ -263,7 +263,7 @@ We measure the Squared Mahalanobis Distance of these three samples and obtain th
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.9\linewidth]{paper/figs/discuss/m_dist_sq_distribution.png}
+    \includegraphics[width=0.9\linewidth]{figs/discuss/m_dist_sq_distribution.png}
     \caption{Squared Mahalanobis Distance of Proper Motion for samples of Quasars, Galaxies and Stars. It's obvious that standard $\chi^2$ distribution can not fit to the practical distribution perfectly.}
     \label{fig:m_dist_sq}
 \end{figure}
@@ -272,7 +272,7 @@ Therefore, we calculated the $p$-value of the zero proper motion hypothesis usin
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.9\linewidth]{paper/figs/discuss/sdss_p_zpm_histogram.png}
+    \includegraphics[width=0.9\linewidth]{figs/discuss/sdss_p_zpm_histogram.png}
     \caption{Distributions of $p$-values testing the null hypothesis of zero proper motion ($\boldsymbol{\mu} = (0,0)$) for the quasar, galaxy, and stars samples. The vertical red dashed line indicates the adopted selection threshold at $p=0.05$. The inset panel provides a magnified view of the region $0.00 \leq p \leq 0.15$ to better illustrate the behavior of the distributions near this boundary.}
     \label{fig:p-value}
 \end{figure}
@@ -302,7 +302,7 @@ As mentioned before, the standard 2 degree-of-freedom $\chi^2$ distribution is n
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.9\linewidth]{paper//figs//discuss/m_dist_sq_qso_fit.png}
+    \includegraphics[width=0.9\linewidth]{figs//discuss/m_dist_sq_qso_fit.png}
     \caption{Distributions of $p$-values testing the null hypothesis of zero proper motion ($\boldsymbol{\mu} = (0,0)$) for the quasar sample. The red dashed line is PDF of the standard 2 degree-of-freedom $\chi^2$ distribution and the black dashed line is PDF of fitted distribution with $\mathrm{scale}=1.117$.}
     \label{fig:m_fit}
 \end{figure}
@@ -340,7 +340,7 @@ For well-behaved point sources, the \texttt{ruwe} value is theoretically expecte
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.9\linewidth]{paper//figs//discuss/RUWE_distribution.png}
+    \includegraphics[width=0.9\linewidth]{figs//discuss/RUWE_distribution.png}
     \caption{\texttt{ruwe} Distribution in Stars, Galaxies and Quasars Samples. It illustrate that the \texttt{ruwe} of point sources are normally around 1. At the same time, the galaxies usually have a higher \texttt{ruwe}.}
     \label{fig:ruwe}
 \end{figure}
@@ -454,7 +454,7 @@ We also found a special source in the SDSS Quasar Catalog: DR16 \citep{lykeSloan
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{paper//figs//discuss/SpecById.ashx.png}
+    \includegraphics[width=1\linewidth]{figs//discuss/SpecById.ashx.png}
     \caption{Spectrum of \textbf{SDSS~J135757.63$+$295418.5} from SDSS DR19 \citep{collaborationNineteenthDataRelease2025}. We prefer this is a White Dwarf.}
     \label{fig:hig_pm_sdss}
 \end{figure}

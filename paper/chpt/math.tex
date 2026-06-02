@@ -3,7 +3,7 @@
 \section{Rayleigh Distribution} 
 \label{app:rayleigh}
 
-Let $\boldsymbol{r}$ be a vector in a two-dimensional space defined by \[\boldsymbol{r} = (x,y)\] where $x$‬ and $y$‬ represent its Cartesian coordinates. The magnitude of $\boldsymbol{r}$ would be:
+Let $\boldsymbol{r}$ be a vector in a two-dimensional space defined by \[\boldsymbol{r} = (x,y)\] where $x$ and $y$ represent its Cartesian coordinates. The magnitude of $\boldsymbol{r}$ would be:
 \begin{equation}
     r = \sqrt{x^2+y^2}
     \label{eq-app:m_r}
@@ -22,9 +22,9 @@ When $x$ and $y$ are two fully independent variables, the joint PDF of them is:
 \end{equation}
 
 To calculate the PDF of the magnitude $r$, we need to transform $x$ and $y$ to Polar Coordinate:\[x=r\cos{\theta},y=r\sin{\theta}\]
-where $r\geq0$ and $\theta \in [0, 2\pi)$‬‬.
+where $r\geq0$ and $\theta \in [0, 2\pi)$.
 
-When doing coordinate transformation, we must multiply by the absolute value of the Jacobian determinant, $|J|$‬. The Jacobian matrix of the transformation from $(x,y)$ to $(r,\theta)$ is:
+When doing coordinate transformation, we must multiply by the absolute value of the Jacobian determinant, $|J|$. The Jacobian matrix of the transformation from $(x,y)$ to $(r,\theta)$ is:
 \begin{equation}
 |J| = \begin{vmatrix} \frac{\partial x}{\partial r} & \frac{\partial x}{\partial \theta} \\ \frac{\partial y}{\partial r} & \frac{\partial y}{\partial \theta} \end{vmatrix} = \begin{vmatrix} \cos\theta & -r\sin\theta \\ \sin\theta & r\cos\theta \end{vmatrix} = r(\cos^2\theta + \sin^2\theta) = r
 \label{eq-app:jacob}
